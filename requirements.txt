@@ -1,0 +1,2 @@
+django version: 3.0.5
+python version: 3.7 or above
