@@ -1,0 +1,61 @@
+{% extends  'blog/base.html'%}
+{% load static%}
+
+
+
+{% block content %}
+<div class="homediv col-sm-10">
+  <h3 class="text-white my-5">Search results :</h3>
+    {% if allPosts|length < 1 %}
+    <p>No search results</p>
+    Your search query : <b>{{query}}</b> did not match any documents. <br>
+    Suggestions:
+    <ul>
+      <li>Make sure that all words are spelled correctly.</li>
+      <li>Try more general keywords.</li>
+      <li> Try fewer keywords.</li>
+      <li> Try different keywords.</li>
+      </li>
+    </ul>
+    {% endif %}
+    {% for post in allPosts  %}
+
+  <div class="jumbotron jumbotron-fluid jumbo-color">
+    <div class="container">
+      <div id="txt" class="postcon">
+        <h1 class="display-4 font-weight-bold"> {{post.title}}</h1>
+        <p>by {{post.name}} at {{post.timestamp}}</p>
+        <p class="desc"><div class='preview'>{{post.desc| truncatechars:500| safe}}</div></p>
+        <div class="my-2">
+          <a href=" {{post.slug}} " role="button" class="btn btn-primary">Continue Reading...</a>
+        </div>
+        {% if user.is_authenticated %}
+        <form action="{% url 'postComment' %}" method="post">
+          {% csrf_token %}
+          <h4>Comments </h2>
+            <div class="form-group">
+              <label for="post comment">Post Comment</label>
+              <input type="text" name="comment" id="" placeholder="enter comment here" class="form-control">
+              <input type="hidden" name="postid" value="{{post.id}}">
+              <input type="hidden" name="parentSno" value="">
+              <br>
+              <input type="submit" value="submit" class="btn-success">
+            </div>
+        </form>
+        {% else %}
+        Please login to post a comment<br>
+        {% endif %}
+        Read Blog to See Comments
+     </div>
+
+    </div>
+
+  </div>
+
+  {%endfor%}
+</div>
+
+
+{% endblock content %}
+
+  
